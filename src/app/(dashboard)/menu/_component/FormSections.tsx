@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { TEMLATE } from "../../../_components/TemplatesContent";
+import { TEMLATE } from "../../_components/TemplatesContent";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -46,7 +46,7 @@ const FormSections = ({ Template, formData, loading }: PORPS) => {
       </h2>
       <p className="text-gray-500 text-sm">{Template?.desc}</p>
       <form className="mt-6" onSubmit={HandleSubmit}>
-        {Template?.form.map((item, i) => (
+        {Template?.form.map((item: any, i: number) => (
           <div key={i} className="my-2 flex flex-col gap-2 mb-7">
             <label className="font-bold">{item?.label}</label>
             {item.field == "input" ? (

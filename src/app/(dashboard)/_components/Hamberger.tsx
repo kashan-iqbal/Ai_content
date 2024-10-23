@@ -3,7 +3,7 @@ import Sidenav from "./Sidenav";
 import { Menu } from "lucide-react";
 
 const Hamberger = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // Function to toggle the modal
   const toggleModal = () => {

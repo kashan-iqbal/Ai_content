@@ -38,7 +38,7 @@ const TemplatesContent: React.FC<TemplatesContentProps> = ({
     } else {
       setShowResult(ListTemplate);
     }
-  }, [handleSearch]);
+  }, [handleSearch, showResult]);
 
   return (
     <>

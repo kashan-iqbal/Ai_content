@@ -29,12 +29,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
-        // primary: {
-        //   DEFAULT: "#A855F7", // Main primary color (purple)
-        //   dark: "#9333EA", // Darker shade of primary
-        //   light: "#C084FC", // Lighter shade of primary
-        //   foreground: "#FFFFFF", // Text color when using primary background
-        // },
         primary: {
           600: "#A855F7", // Add your custom color here
           700: "#9333EA",
@@ -74,7 +68,7 @@ const config: Config = {
       },
       backgroundImage: {
         "custom-gradient":
-          "radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);",
+          "radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%)",
       },
     },
   },

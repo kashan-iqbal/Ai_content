@@ -24,13 +24,14 @@ export async function GET(request: Request) {
 
     let score = 0;
     result.forEach((element) => {
+      if (!element.aiResponce) return;
       score += element?.aiResponce.length;
     });
     console.log(result);
     return NextResponse.json({ credit: score }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch credit score" },
+      { message: "Failed to fetch credit score", error },
       { status: 500 }
     );
   }

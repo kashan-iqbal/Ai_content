@@ -14,34 +14,55 @@ import {
 import { AiOutPut } from "@/utils/AiSchema";
 import { db } from "@/utils/dbConnect";
 import { useUser } from "@clerk/nextjs";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { TEMLATE } from "../_components/TemplatesContent";
+
+interface RESPONCE {
+  id: number;
+  formData: string;
+  aiResponce: string | null;
+  templateSlug: string;
+  createdBy: string;
+  createdAt: string | null;
+}
 
 const History = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<RESPONCE[]>([]);
   const { user, isLoaded } = useUser(); // Ensure `isLoaded` is available
 
   useEffect(() => {
-    // Fetch data only when the `user` is loaded
+    const getData = async () => {
+      try {
+        const email = user?.primaryEmailAddress?.emailAddress;
+
+        // Check if the email is available before making the query
+        if (!email) {
+          console.error("Email address is not defined.");
+          return;
+        }
+
+        // Fetch data where `createdBy` matches the user's email address
+        const fetchData = await db
+          .select()
+          .from(AiOutPut)
+          .where(
+            eq(AiOutPut.createdBy, email) // Ensure email is correctly passed as a string
+          )
+          .orderBy(AiOutPut.createdAt); // Sort by 'createdAt' in descending order
+
+        setData(fetchData); // Set the fetched data to state
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    // Fetch data only when `isLoaded` is true and the user has an email address
     if (isLoaded && user?.primaryEmailAddress?.emailAddress) {
       getData();
     }
   }, [isLoaded, user]);
-
-  const getData = async () => {
-    try {
-      // Fetch data where `createdBy` matches the user's email address
-      const fetchData = await db
-        .select()
-        .from(AiOutPut)
-        .where(eq(AiOutPut.createdBy, user?.primaryEmailAddress?.emailAddress)); // Correct where clause with eq()
-
-      setData(fetchData.reverse()); // Set the fetched data to state
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   return (
     <div>
@@ -67,14 +88,16 @@ const History = () => {
                 (template) => template.slug == item?.templateSlug
               );
               const handleCopy = () => {
-                navigator.clipboard.writeText(item?.aiResponce);
+                navigator.clipboard.writeText(
+                  item?.aiResponce || "unable to copy"
+                );
               };
 
               return (
                 <TableRow key={index}>
                   <TableCell className=" flex items-center">
                     <Image
-                      src={findTemplate?.icon}
+                      src={String(findTemplate?.icon)}
                       width={50}
                       height={50}
                       alt="image"

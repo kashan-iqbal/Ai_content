@@ -11,23 +11,38 @@ function UseTrack() {
   const { user } = useUser();
 
   useEffect(() => {
-    user && getData();
-  }, [user]);
-  const getData = async () => {
-    const result = await db
-      .select()
-      .from(AiOutPut)
-      .where(eq(AiOutPut.createdBy, user?.primaryEmailAddress?.emailAddress));
-    getCreditScore(result);
-  };
+    const getData = async () => {
+      try {
+        if (user?.primaryEmailAddress?.emailAddress) {
+          const result = await db
+            .select()
+            .from(AiOutPut)
+            .where(
+              eq(AiOutPut.createdBy, user.primaryEmailAddress.emailAddress)
+            );
+          getCreditScore(result);
+        } else {
+          console.error("Email address is not available.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  const getCreditScore = (res) => {
+    if (user) {
+      getData(); // Call the async function inside useEffect
+    }
+  }, [user]);
+
+  const getCreditScore = (res: any) => {
+    if (!res) return;
     let score = 0;
 
-    res.length > 0 &&
-      res.forEach((element) => {
-        score = score + element?.aiResponce.length;
+    if (res.length > 0) {
+      res.forEach((element: any) => {
+        score += element?.aiResponce.length;
       });
+    }
     setCredit(score);
   };
 

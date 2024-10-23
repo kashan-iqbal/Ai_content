@@ -5,7 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import UseTrack from "./UseTrack";
 
-const Sidenav = ({ setIsOpen }) => {
+interface PROPS {
+  setIsOpen: (value: boolean | ((prev: boolean) => boolean)) => void;
+}
+
+const Sidenav = ({ setIsOpen = () => {} }: PROPS) => {
   const router = useRouter();
   const pathName = usePathname();
 
@@ -32,17 +36,15 @@ const Sidenav = ({ setIsOpen }) => {
     },
   ];
 
-  const handleNavigation = (path) => {
+  const handleNavigation = (path: string) => {
     router.push(path);
     if (setIsOpen) {
       setIsOpen((prev) => !prev);
     }
   };
 
-  const isExactActive = (menuPath) => pathName.includes(menuPath);
+  const isExactActive = (menuPath: string) => pathName.includes(menuPath);
   // Function to check if the current path is active for nested routes
-  const isNestedActive = (menuPath) =>
-    pathName.startsWith(menuPath) && pathName !== "/dashboard";
 
   return (
     <div className="h-screen relative border p-5 shadow-sm">

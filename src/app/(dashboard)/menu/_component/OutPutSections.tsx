@@ -8,15 +8,6 @@ interface PROPS {
 }
 
 const OutPutSections = ({ aiResponce }: PROPS) => {
-  const textareaRef = useRef(null);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto"; // Reset the height
-      textareaRef.current.style.height =
-        textareaRef.current.scrollHeight + "px"; // Adjust height based on scroll height
-    }
-  }, [aiResponce]);
   const handleCopy = () => {
     navigator?.clipboard.writeText(aiResponce && aiResponce);
   };

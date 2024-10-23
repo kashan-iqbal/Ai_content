@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     // Calculate credit score based on response lengths
     let score = 0;
     result.forEach((element) => {
+      if (!element.aiResponce) return;
       score += element?.aiResponce.length;
     });
     console.log(result, `ima result`);
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     // Handle errors
     return NextResponse.json(
-      { error: "Failed to fetch credit score" },
+      { message: "Failed to fetch credit score", error },
       { status: 500 }
     );
   }
