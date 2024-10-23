@@ -20,7 +20,7 @@ const Header = async () => {
         <div className="block md:hidden">
           <Hamberger />
         </div>
-        <h2 className="bg-purple-500 p-2 rounded-full text-center ml-4 mb-3">
+        <h2 className="bg-purple-500 p-1 md:p-2 rounded-full text-center ml-4 mb-3">
           join Membership just $9.99/Month
         </h2>
         <div className="h-full ">
