@@ -1,37 +1,41 @@
-// src/app/api/user-credit/route.ts
+// src/app/api/save-content/route.ts
 import { db } from "@/utils/dbConnect";
 import { AiOutPut } from "@/utils/AiSchema";
-import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-// Named export for GET method
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const email = searchParams.get("email");
-
-  if (!email) {
-    return NextResponse.json(
-      { error: "User email is required" },
-      { status: 400 }
-    );
-  }
-
+// POST request to save the data in the database
+export async function POST(request: Request) {
   try {
-    const result = await db
-      .select()
-      .from(AiOutPut)
-      .where(eq(AiOutPut.createdBy, email));
+    // Parse the incoming request body
+    const body = await request.json();
+    const { data, aiOutput, templateSlug, user } = body;
 
-    let score = 0;
-    result.forEach((element) => {
-      if (!element.aiResponce) return;
-      score += element?.aiResponce.length;
+    // Validate that required fields are present
+    if (!user?.primaryEmailAddress || !aiOutput || !templateSlug) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    // Insert the data into the `AiOutPut` table
+    const result = await db.insert(AiOutPut).values({
+      formData: data,
+      aiResponce: aiOutput,
+      templateSlug: templateSlug,
+      createdBy: user.primaryEmailAddress.emailAddress, // Assuming this is where user email is stored
+      createdAt: new Date().toISOString(), // Set the current timestamp
     });
-    console.log(result);
-    return NextResponse.json({ credit: score }, { status: 200 });
-  } catch (error) {
+
+    // Return success response
     return NextResponse.json(
-      { message: "Failed to fetch credit score", error },
+      { message: "Data saved successfully", result },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error saving content:", error);
+    return NextResponse.json(
+      { message: "Failed to save content", error },
       { status: 500 }
     );
   }

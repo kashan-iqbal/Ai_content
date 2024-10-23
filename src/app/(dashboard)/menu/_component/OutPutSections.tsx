@@ -28,6 +28,7 @@ const OutPutSections = ({ aiResponce }: PROPS) => {
           className="outline-none"
           value={aiResponce}
           rows={Math.max(1, aiResponce.split("\n").length)}
+          readOnly
         />
       </div>
     </div>
