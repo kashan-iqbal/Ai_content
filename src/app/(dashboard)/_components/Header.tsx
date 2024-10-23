@@ -5,7 +5,7 @@ import Hamberger from "./Hamberger";
 
 const Header = async () => {
   return (
-    <div className="p-5 shadow-sm border-b-2 flex flex-col md:flex-row  items-center justify-between">
+    <div className=" p-4 md:p-5 shadow-sm border-b-2 flex flex-col md:flex-row  items-center justify-between">
       <div className="hidden md:block">
         <div className="flex items-center gap-2 rounded-xl outline outline-1 outline-black  p-2 max-w-lg border-solid  ">
           <Search />
@@ -20,8 +20,8 @@ const Header = async () => {
         <div className="block md:hidden">
           <Hamberger />
         </div>
-        <h2 className="bg-purple-500 p-1 md:p-2 rounded-full text-center ml-4 mb-3">
-          join Membership just $9.99/Month
+        <h2 className="bg-purple-500 p-[0.3] text-md rounded-full text-center mx-auto my-auto">
+          join Membership just 100-Rs/Month
         </h2>
         <div className="h-full ">
           <UserButton />
