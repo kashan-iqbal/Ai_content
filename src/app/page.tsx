@@ -34,7 +34,7 @@ export default function Home() {
         At Ai Content, we use AI to create dynamic content tailored to various
         industries, from tech to English. Our platform helps businesses generate
         impactful content that fuels growth and stays ahead in a competitive
-        market.
+        market around the Glob.
       </p>
       <div className="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
         <a
